@@ -1,0 +1,36 @@
+groups:
+  - name: agent
+    rules:
+      - alert: AgentTaskFailed
+        expr: increase(agent_runs_total{status!="passed"}[10m]) > 0
+        labels:
+          severity: warning
+        annotations:
+          summary: "A task failed after all retries (or crashed)"
+      - alert: AgentSlowRun
+        expr: agent_last_run_seconds > 300
+        labels:
+          severity: warning
+        annotations:
+          summary: "The last run took more than 5 minutes"
+      - alert: GpuMemoryHigh
+        expr: gpu_memory_used_mib / gpu_memory_total_mib > 0.95
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "GPU memory is above 95 percent"
+      - alert: OllamaDown
+        expr: ollama_up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Ollama does not answer"
+      - alert: ExporterDown
+        expr: up{job="agent"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Prometheus cannot reach metrics_server.py"

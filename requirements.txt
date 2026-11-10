@@ -1,0 +1,11 @@
+langgraph
+requests
+numpy
+psutil
+prometheus-client
+fpdf2
+opentelemetry-api
+arize-phoenix
+arize-phoenix-otel
+openinference-instrumentation-langchain
+pageindex
